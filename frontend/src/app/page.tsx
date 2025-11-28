@@ -11,18 +11,20 @@ import createGlobe from "cobe"
 
 export default function Home() {
   return (
-    <main className="bg-black text-white">
-      <HeroSection />
-      <WhoWeAreSection />
-      <FleetSection />
-      <OfferingsSection />
-      <ServicesSection />
-      <PresenceSection />
-      <ScheduleVisitSection />
-      <CommunitySection />
-      <TrainingSection />
-      <FAQSection />
-      <ContactSection />
+        <main className="bg-black text-white overflow-x-hidden w-full max-w-full">
+      <div className="overflow-x-hidden w-full max-w-full">
+        <HeroSection />
+        <WhoWeAreSection />
+        <FleetSection />
+        <OfferingsSection />
+        <ServicesSection />
+        <PresenceSection />
+        <ScheduleVisitSection />
+        <CommunitySection />
+        <TrainingSection />
+        <FAQSection />
+        <ContactSection />
+      </div>
     </main>
   )
 }
@@ -50,7 +52,7 @@ function HeroSection() {
   const duplicatedRight = [...rightColumnImages, ...rightColumnImages, ...rightColumnImages, ...rightColumnImages];
 
   return (
-    <section className="relative  h-[100svh] overflow-hidden bg-black">
+    <section className="relative h-[100svh] overflow-hidden bg-black w-full max-w-full overflow-x-hidden">
       {/* ---------------- MOBILE ---------------- */}
       <div className="relative h-full lg:hidden">
         {/* MOBILE BACKGROUND GRID */}
@@ -133,7 +135,7 @@ function HeroSection() {
       </div>
 
       {/* ---------------- DESKTOP ---------------- */}
-      <div className="hidden mx-auto max-w-7xl h-full lg:grid lg:grid-cols-2">
+      <div className="hidden mx-auto max-w-7xl h-full lg:grid lg:grid-cols-2 overflow-hidden w-full">
         {/* LEFT TEXT */}
         <div className="flex items-center px-12 xl:px-20 2xl:px-28 relative z-20">
           <motion.div
@@ -176,7 +178,7 @@ function HeroSection() {
           {/* SCROLLING COLUMNS */}
           <div className="flex gap-4 h-full px-2">
             {/* COL LEFT */}
-            <div className="w-1/2 relative overflow-hidden">
+            <div className="w-1/2 relative overflow-hidden max-w-full">
               <motion.div
                 className="flex flex-col gap-3"
                 animate={{ y: [0, -2400] }}
@@ -194,7 +196,7 @@ function HeroSection() {
             </div>
 
             {/* COL RIGHT */}
-            <div className="w-1/2 relative overflow-hidden">
+            <div className="w-1/2 relative overflow-hidden max-w-full">
               <motion.div
                 className="flex flex-col gap-3"
                 animate={{ y: [-2400, 0] }}
@@ -597,7 +599,7 @@ function PresenceSection() {
 
   /* ------------------- JSX ------------------- */
   return (
-    <section ref={ref} className="py-28 bg-black relative">
+    <section ref={ref} className="py-28 bg-black relative overflow-x-hidden w-full max-w-full">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 grid gap-16 md:grid-cols-2 items-center">
 
         {/* LEFT CONTENT */}
@@ -661,9 +663,9 @@ function PresenceSection() {
   initial={{ opacity: 0, scale: 0.85 }}
   animate={inView ? { opacity: 1, scale: 1 } : {}}
   transition={{ duration: 1 }}
-  className="relative flex justify-center md:justify-end w-full"
+  className="relative flex justify-center md:justify-end w-full overflow-hidden max-w-full"
 >
-  <div className="relative w-full flex justify-center">
+  <div className="relative w-full flex justify-center overflow-hidden">
     {/* FINAL RESPONSIVE GLOBE SIZE — NO OVERFLOW */}
     <div className="w-[220px] h-[220px] 
                     sm:w-[260px] sm:h-[260px]
