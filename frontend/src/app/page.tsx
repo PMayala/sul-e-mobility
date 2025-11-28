@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useAnimation } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { ChevronRight, ArrowRight, MapPin, Plus, Minus, Mail, Phone, Car, Building2, Users } from 'lucide-react'
 import createGlobe from "cobe"
+import PresenceMap from '@/components/PresenceMap'
 
 
 export default function Home() {
@@ -489,16 +490,7 @@ function FleetSection() {
 }
 
 function PresenceSection() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [showLocations, setShowLocations] = useState(false)
-
-  // rotation state
-  const phiRef = useRef(0)
-  const thetaRef = useRef(0)
-
-  // drag state
-  const draggingRef = useRef(false)
-  const lastPos = useRef({ x: 0, y: 0 })
 
   const [ref, inView] = useInView({
     threshold: 0.15,
@@ -506,98 +498,15 @@ function PresenceSection() {
   })
 
   const locations = [
-    { city: "Kigali", address: "5th Floor, Wing B, Fairview Building, KG 622 Street, Kimihurura", country: "Rwanda", type: "HQ" },
-    { city: "Musanze", address: "Northern Province Trading Center, Avenue de Tourisme", country: "Rwanda", type: "Showroom" },
-    { city: "Muhanga", address: "Kavumu, Gitarama, Nyamabuye, Muhanga", country: "Rwanda", type: "Showroom" },
-    { city: "Kayonza", address: "Mukarange, Kayonza (Opp. former Police Station)", country: "Rwanda", type: "Showroom" },
-    { city: "Nyagatare", address: "Northern Eastern Region Office", country: "Rwanda", type: "Showroom" },
-    { city: "Rusizi", address: "Western Province", country: "Rwanda", type: "Showroom" },
-    { city: "Gisenyi", address: "Rubavu (Former KCB Bank, Opp GT Bank)", country: "Rwanda", type: "Showroom" }
-  ]
+  { city: "Kigali", address: "5th Floor, Wing B, Fairview Building, KG 622 Street, Kimihurura", country: "Rwanda", type: "HQ", lat: -1.94995, lng: 30.05885 },
+  { city: "Musanze", address: "Northern Province Trading Center, Avenue de Tourisme", country: "Rwanda", type: "Showroom", lat: -1.49944, lng: 29.63420 },
+  { city: "Muhanga", address: "Kavumu, Gitarama, Nyamabuye, Muhanga", country: "Rwanda", type: "Showroom", lat: -2.06181, lng: 29.75473 },
+  { city: "Kayonza", address: "Mukarange, Kayonza (Opp. former Police Station)", country: "Rwanda", type: "Showroom", lat: -1.85261, lng: 30.66760 },
+  { city: "Nyagatare", address: "Northern Eastern Region Office", country: "Rwanda", type: "Showroom", lat: -1.29375, lng: 30.32547 },
+  { city: "Rusizi", address: "Western Province", country: "Rwanda", type: "Showroom", lat: -2.47465, lng: 28.90795 },
+  { city: "Gisenyi", address: "Rubavu (Former KCB Bank, Opp GT Bank)", country: "Rwanda", type: "Showroom", lat: -1.70278, lng: 29.25639 }
+]
 
-  /* ------------------- CREATE GLOBE ------------------- */
-  useEffect(() => {
-    if (!canvasRef.current || !inView) return
-
-    const canvas = canvasRef.current
-
-    // AUTO-SCALE GLOBE size based on container width
-    const resizeGlobe = () => {
-      const parent = canvas.parentElement
-      if (!parent) return
-
-      const size = Math.min(parent.clientWidth, 550) // keep perfect circle
-      canvas.width = size * 2
-      canvas.height = size * 2
-    }
-
-    resizeGlobe()
-    window.addEventListener("resize", resizeGlobe)
-
-    let slowSpeed = 0.0006
-
-    const globe = createGlobe(canvas, {
-      devicePixelRatio: 2,
-      width: canvas.width,
-      height: canvas.height,
-      phi: 0,
-      theta: 0.3,
-      dark: 1,
-      diffuse: 1.2,
-      scale: 1.0,
-      mapSamples: 20000,
-      mapBrightness: 6,
-      baseColor: [0.35, 0, 0],
-      markerColor: [0.8, 0, 0],
-      glowColor: [0.6, 0, 0],
-      opacity: 1,
-
-      markers: [
-        { location: [-1.94, 30.06], size: 0.11 },
-        { location: [-1.5, 29.63], size: 0.09 },
-        { location: [-2.15, 29.78], size: 0.09 },
-        { location: [-1.86, 30.67], size: 0.09 },
-        { location: [-1.32, 30.32], size: 0.09 },
-        { location: [-2.48, 28.90], size: 0.09 },
-        { location: [-1.69, 29.26], size: 0.09 }
-      ],
-
-      onRender: (state) => {
-        state.phi = phiRef.current
-        state.theta = thetaRef.current
-        if (!draggingRef.current) phiRef.current += slowSpeed
-      }
-    })
-
-    return () => {
-      globe.destroy()
-      window.removeEventListener("resize", resizeGlobe)
-    }
-  }, [inView])
-
-  /* ------------------- HANDLERS ------------------- */
-  const handlePointerDown = (e: React.PointerEvent) => {
-    draggingRef.current = true
-    lastPos.current = { x: e.clientX, y: e.clientY }
-  }
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!draggingRef.current) return
-
-    const dx = e.clientX - lastPos.current.x
-    const dy = e.clientY - lastPos.current.y
-
-    phiRef.current += dx * 0.004
-    thetaRef.current += dy * 0.004
-
-    lastPos.current = { x: e.clientX, y: e.clientY }
-  }
-
-  const handlePointerUp = () => {
-    draggingRef.current = false
-  }
-
-  /* ------------------- JSX ------------------- */
   return (
     <section ref={ref} className="py-28 bg-black relative overflow-x-hidden w-full max-w-full">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 grid gap-16 md:grid-cols-2 items-center">
@@ -659,36 +568,12 @@ function PresenceSection() {
           </AnimatePresence>
         </motion.div>
 
-        <motion.div
-  initial={{ opacity: 0, scale: 0.85 }}
-  animate={inView ? { opacity: 1, scale: 1 } : {}}
-  transition={{ duration: 1 }}
-  className="relative flex justify-center md:justify-end w-full overflow-hidden max-w-full"
->
-  <div className="relative w-full flex justify-center overflow-hidden">
-    {/* FINAL RESPONSIVE GLOBE SIZE — NO OVERFLOW */}
-    <div className="w-[220px] h-[220px] 
-                    sm:w-[260px] sm:h-[260px]
-                    md:w-[300px] md:h-[300px]
-                    lg:w-[340px] lg:h-[340px]
-                    xl:w-[380px] xl:h-[380px]">
-      <canvas
-        ref={canvasRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-      />
-    </div>
-  </div>
-</motion.div>
+        <PresenceMap locations={locations} />
 
       </div>
     </section>
   )
 }
-
 
 function ScheduleVisitSection() {
   return (
