@@ -657,27 +657,31 @@ function PresenceSection() {
           </AnimatePresence>
         </motion.div>
 
-        {/* RIGHT — RESPONSIVE PERFECTLY ROUND GLOBE */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={inView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1 }}
-          className="relative flex justify-center md:justify-end"
-        >
-          <div className="relative">
-            {/* The wrapper ensures the globe remains perfectly round */}
-            <div className="w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[420px] md:h-[420px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px]">
-              <canvas
-                ref={canvasRef}
-                className="w-full h-full cursor-grab active:cursor-grabbing"
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerLeave={handlePointerUp}
-              />
-            </div>
-          </div>
-        </motion.div>
+  initial={{ opacity: 0, scale: 0.85 }}
+  animate={inView ? { opacity: 1, scale: 1 } : {}}
+  transition={{ duration: 1 }}
+  className="relative flex justify-center md:justify-end w-full"
+>
+  <div className="relative w-full flex justify-center">
+    {/* FINAL RESPONSIVE GLOBE SIZE — NO OVERFLOW */}
+    <div className="w-[220px] h-[220px] 
+                    sm:w-[260px] sm:h-[260px]
+                    md:w-[300px] md:h-[300px]
+                    lg:w-[340px] lg:h-[340px]
+                    xl:w-[380px] xl:h-[380px]">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full cursor-grab active:cursor-grabbing"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+      />
+    </div>
+  </div>
+</motion.div>
+
       </div>
     </section>
   )
